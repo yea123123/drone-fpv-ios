@@ -301,7 +301,7 @@ final class GameScene3D: SCNScene {
         ring.runAction(.sequence([
             .group([.scale(to: big ? 3 : 2, duration: big ? 0.45 : 0.3),
                     .fadeOut(duration: big ? 0.45 : 0.3)]),
-            .run { node, _ in node.removeFromParent() }
+            .run { node in node.removeFromParentNode() }
         ]))
 
         // Flash sphere
@@ -311,7 +311,7 @@ final class GameScene3D: SCNScene {
         let flash = SCNNode(geometry: flashGeo)
         flash.position = SCNVector3(x, 1, z)
         worldNode.addChildNode(flash)
-        flash.runAction(.sequence([.fadeOut(duration: 0.25), .run { node, _ in node.removeFromParent() }]))
+        flash.runAction(.sequence([.fadeOut(duration: 0.25), .run { node in node.removeFromParentNode() }]))
 
         if big {
             shake = max(shake, 0.45)
@@ -344,7 +344,7 @@ final class GameScene3D: SCNScene {
         guard t.alive else { return }
         t.alive = false
         explode(at: t.x, t.z, big: false)
-        t.node.removeFromParent()
+        t.node.removeFromParentNode()
         score += 120
         onScoreChanged?(score)
         onTanksChanged?(tanks.filter { $0.alive }.count)
@@ -405,8 +405,8 @@ final class GameScene3D: SCNScene {
     }
 
     private func clearEntities() {
-        tanks.forEach { $0.node.removeFromParent() }
-        shells.forEach { $0.node.removeFromParent() }
+        tanks.forEach { $0.node.removeFromParentNode() }
+        shells.forEach { $0.node.removeFromParentNode() }
         tanks.removeAll(); shells.removeAll(); bombs.removeAll()
         impactNode.isHidden = true
     }
@@ -508,7 +508,7 @@ final class GameScene3D: SCNScene {
                 s.alive = false
             }
         }
-        shells.filter { !$0.alive }.forEach { $0.node.removeFromParent() }
+        shells.filter { !$0.alive }.forEach { $0.node.removeFromParentNode() }
         shells = shells.filter { $0.alive }
     }
 
