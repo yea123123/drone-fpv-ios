@@ -405,8 +405,8 @@ final class GameScene3D: SCNScene {
     }
 
     private func clearEntities() {
-        for t in tanks { t.node.removeFromParent() }
-        for s in shells { s.node.removeFromParent() }
+        tanks.forEach { $0.node.removeFromParent() }
+        shells.forEach { $0.node.removeFromParent() }
         tanks.removeAll(); shells.removeAll(); bombs.removeAll()
         impactNode.isHidden = true
     }
@@ -508,7 +508,7 @@ final class GameScene3D: SCNScene {
                 s.alive = false
             }
         }
-        for s in shells where !s.alive { s.node.removeFromParent() }
+        shells.filter { !$0.alive }.forEach { $0.node.removeFromParent() }
         shells = shells.filter { $0.alive }
     }
 

@@ -187,12 +187,12 @@ struct PlayingHUD: View {
             ZStack {
                 // Reticle
                 Circle()
-                    .stroke(neon, lineWidth: 2)
+                    .strokeBorder(neon, lineWidth: 2)
                     .frame(width: 52, height: 52)
                     .position(x: geo.size.width / 2, y: geo.size.height / 2)
 
                 Circle()
-                    .fill(neon)
+                    .foregroundColor(neon)
                     .frame(width: 4, height: 4)
                     .position(x: geo.size.width / 2, y: geo.size.height / 2)
 
@@ -241,14 +241,20 @@ struct PlayingHUD: View {
                 if joyActive {
                     ZStack {
                         Circle()
-                            .stroke(Color.white.opacity(0.35), lineWidth: 3)
                             .fill(Color.white.opacity(0.05))
+                            .overlay(
+                                Circle()
+                                    .strokeBorder(Color.white.opacity(0.35), lineWidth: 3)
+                            )
                             .frame(width: 128, height: 128)
                             .position(joyOrigin)
 
                         Circle()
                             .fill(Color.white.opacity(0.25))
-                            .stroke(neon, lineWidth: 2)
+                            .overlay(
+                                Circle()
+                                    .strokeBorder(neon, lineWidth: 2)
+                            )
                             .frame(width: 60, height: 60)
                             .position(x: joyOrigin.x + joyDrag.width, y: joyOrigin.y + joyDrag.height)
                     }
@@ -259,7 +265,10 @@ struct PlayingHUD: View {
                     ZStack {
                         Circle()
                             .fill(Color(red: 1, green: 0.8, blue: 0.2).opacity(0.15))
-                            .stroke(vm.bombReady ? Color(red: 1, green: 0.8, blue: 0.2) : Color.white.opacity(0.6), lineWidth: 3)
+                            .overlay(
+                                Circle()
+                                    .strokeBorder(vm.bombReady ? Color(red: 1, green: 0.8, blue: 0.2) : Color.white.opacity(0.6), lineWidth: 3)
+                            )
                             .frame(width: 96, height: 96)
 
                         Text(vm.bombReady ? "BOMB" : String(format: "%.1f", max(0, vm.bombCooldown)))
