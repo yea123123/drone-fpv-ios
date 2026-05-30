@@ -301,7 +301,7 @@ final class GameScene3D: SCNScene {
         ring.runAction(.sequence([
             .group([.scale(to: big ? 3 : 2, duration: big ? 0.45 : 0.3),
                     .fadeOut(duration: big ? 0.45 : 0.3)]),
-            .run { node in node.removeFromParent() }
+            .run { node, _ in node.removeFromParent() }
         ]))
 
         // Flash sphere
@@ -311,7 +311,7 @@ final class GameScene3D: SCNScene {
         let flash = SCNNode(geometry: flashGeo)
         flash.position = SCNVector3(x, 1, z)
         worldNode.addChildNode(flash)
-        flash.runAction(.sequence([.fadeOut(duration: 0.25), .run { node in node.removeFromParent() }]))
+        flash.runAction(.sequence([.fadeOut(duration: 0.25), .run { node, _ in node.removeFromParent() }]))
 
         if big {
             shake = max(shake, 0.45)
