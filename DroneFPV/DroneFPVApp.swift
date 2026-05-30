@@ -176,7 +176,7 @@ struct ScanlinesView: View {
 // MARK: - Playing HUD
 struct PlayingHUD: View {
     @ObservedObject var vm: GameViewModel
-    @GestureState private var joyDrag: CGSize = .zero
+    @State private var joyDrag: CGSize = .zero
     @State private var joyOrigin: CGPoint = .zero
     @State private var joyActive = false
 
@@ -285,7 +285,7 @@ struct PlayingHUD: View {
                     .position(x: geo.size.width / 4, y: geo.size.height / 2)
                     .gesture(
                         DragGesture(minimumDistance: 0)
-                            .updating($joyDrag) { value, state, _ in
+                            .onChanged { value in
                                 if !joyActive {
                                     joyOrigin = value.startLocation
                                     joyActive = true
@@ -298,11 +298,12 @@ struct PlayingHUD: View {
                                     dx = dx / len * maxR
                                     dy = dy / len * maxR
                                 }
-                                state = CGSize(width: dx, height: dy)
+                                joyDrag = CGSize(width: dx, height: dy)
                                 vm.scene.joyVec = CGVector(dx: dx / maxR, dy: dy / maxR)
                             }
                             .onEnded { _ in
                                 joyActive = false
+                                joyDrag = .zero
                                 vm.scene.joyVec = .zero
                             }
                     )
