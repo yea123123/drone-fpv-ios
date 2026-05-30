@@ -13,7 +13,7 @@ final class GameScene3D: SCNScene {
     private let neon = UIColor(red: 0.47, green: 0.90, blue: 0.63, alpha: 1)
 
     // MARK: - State
-    private enum GState { case menu, playing, over }
+    enum GState { case menu, playing, over }
     private var state: GState = .menu
 
     private var droneX: Float = 0, droneZ: Float = 0
@@ -81,6 +81,8 @@ final class GameScene3D: SCNScene {
     var onSpeedChanged: ((Float) -> Void)?
     var onBombStateChanged: ((Bool, Float) -> Void)?
     var onStateChanged: ((GState) -> Void)?
+
+    func getState() -> GState { return state }
     var onFlash: ((Float) -> Void)?
     var onMessage: ((String) -> Void)?
 
@@ -299,7 +301,7 @@ final class GameScene3D: SCNScene {
         ring.runAction(.sequence([
             .group([.scale(to: big ? 3 : 2, duration: big ? 0.45 : 0.3),
                     .fadeOut(duration: big ? 0.45 : 0.3)]),
-            .removeFromParent()
+            .run { node in node.removeFromParent() }
         ]))
 
         // Flash sphere
@@ -309,7 +311,7 @@ final class GameScene3D: SCNScene {
         let flash = SCNNode(geometry: flashGeo)
         flash.position = SCNVector3(x, 1, z)
         worldNode.addChildNode(flash)
-        flash.runAction(.sequence([.fadeOut(duration: 0.25), .removeFromParent()]))
+        flash.runAction(.sequence([.fadeOut(duration: 0.25), .run { node in node.removeFromParent() }]))
 
         if big {
             shake = max(shake, 0.45)

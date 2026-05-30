@@ -29,12 +29,12 @@ struct GameView3D: View {
             FPVOverlay(flash: vm.flashAlpha)
 
             // HUD
-            if vm.state == .playing {
+            if vm.scene.getState() == .playing {
                 PlayingHUD(vm: vm)
             }
 
             // Menu/Game Over
-            if vm.state == .menu || vm.state == .over {
+            if vm.scene.getState() == .menu || vm.scene.getState() == .over {
                 MenuOverlay(vm: vm)
             }
         }
@@ -258,7 +258,7 @@ struct PlayingHUD: View {
                 Button(action: { vm.dropBomb() }) {
                     ZStack {
                         Circle()
-                            .fill(Color(red: 1, green: 0.8, blue: 0.2, alpha: 0.15))
+                            .fill(Color(red: 1, green: 0.8, blue: 0.2).opacity(0.15))
                             .stroke(vm.bombReady ? Color(red: 1, green: 0.8, blue: 0.2) : Color.white.opacity(0.6), lineWidth: 3)
                             .frame(width: 96, height: 96)
 
@@ -313,17 +313,17 @@ struct MenuOverlay: View {
                 .ignoresSafeArea()
 
             VStack(spacing: 16) {
-                Text(vm.state == .menu ? "FPV STRIKE" : "ДРОН СБИТ")
+                Text(vm.scene.getState() == .menu ? "FPV STRIKE" : "ДРОН СБИТ")
                     .font(.system(size: 40, weight: .bold, design: .monospaced))
                     .foregroundColor(neon)
 
-                Text(vm.state == .menu ? "ТАП — СТАРТ" : "ТАП — ЗАНОВО   ·   СЧЁТ \(vm.score)")
+                Text(vm.scene.getState() == .menu ? "ТАП — СТАРТ" : "ТАП — ЗАНОВО   ·   СЧЁТ \(vm.score)")
                     .font(.system(size: 18, weight: .bold, design: .monospaced))
                     .foregroundColor(.white)
             }
         }
         .onTapGesture {
-            if vm.state == .menu || vm.state == .over {
+            if vm.scene.getState() == .menu || vm.scene.getState() == .over {
                 vm.startGame()
             }
         }
